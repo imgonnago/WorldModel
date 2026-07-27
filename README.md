@@ -12,4 +12,5 @@
 - C(control): 이 부분은 논문에선 간단한 선형 linear 모델을 사용함. 행동을 뽑아내는 부분.
 
 ---
-
+## 참고 논문
+World Model: https://arxiv.org/pdf/1803.10122
