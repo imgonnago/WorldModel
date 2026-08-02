@@ -1,8 +1,9 @@
+import config
 import torch.nn as nn
 import torch
 
 class Encoder(nn.Module):
-  def __init__(self, flatten_dim : int = 2304, output_dim: int = 32, ) -> None:
+  def __init__(self, flatten_dim : int = config.FLATTEN_DIM, output_dim: int = config.LATENT_DIM, ) -> None:
     super().__init__()
 
     self.encoder = nn.Sequential(

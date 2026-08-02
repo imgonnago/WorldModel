@@ -1,4 +1,5 @@
-
+import torch
+import torch.nn as nn
 
 class Decoder(nn.Module):
   def __init__(self, latent_dim = 32, flatten_dim = 2304 ) -> None: 
