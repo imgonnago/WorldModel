@@ -5,5 +5,4 @@ LR = 1e-4
 EPOCHS = 200
 DEVICE = "cuda"
 NUM_EPISODES = 200
-SAVE_DIR = "./data"
 MAX_STEPS = 300
