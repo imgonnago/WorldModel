@@ -67,5 +67,5 @@ def collect_random_rollouts(
         return obs_array, action_array, next_obs_array
 
 if __name__ == "__main__":
-    collect_random_rollouts(num_episodes=180, save_dir = "./save_data/train")
-    collect_random_rollouts(num_episodes=20, save_dir = "./save_data/val")
+    collect_random_rollouts(num_episodes=1000, save_dir = "./save_data/train")
+    collect_random_rollouts(num_episodes=100, save_dir = "./save_data/val")

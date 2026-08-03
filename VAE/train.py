@@ -38,7 +38,7 @@ def train_vae(
     epochs=20,
     lr=1e-4,
     device="cuda",
-    checkpoint_dir="./saved_data/checkpoints",   # 이름도 명확하게 변경
+    checkpoint_dir=config.CHECKPOINT_DIR,
     resume_from=None,
 ):
     os.makedirs(checkpoint_dir, exist_ok=True)
@@ -46,6 +46,8 @@ def train_vae(
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
     start_epoch = 0
+    patience = 15
+    no_improvement_epochs = 0
     best_val_loss = float("inf")
 
     if resume_from is not None and os.path.exists(resume_from):
@@ -88,10 +90,13 @@ def train_vae(
 
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
-            save_checkpoint(
-                model, optimizer, epoch, avg_train_loss, avg_val_loss,
-                save_path=os.path.join(checkpoint_dir, "best_checkpoint.pth")
-            )
+            no_improve_count = 0
+            save_checkpoint(model, optimizer, epoch, avg_train_loss, avg_val_loss, save_path=os.path.join(checkpoint_dir, "best_checkpoint.pth"))
             print(f"  → 베스트 모델 갱신 (val loss: {avg_val_loss:.4f})")
+        else:
+            no_improve_count += 1
+            if no_improve_count >= patience:
+                print(f"Early stopping at epoch {epoch+1} (patience={patience} 도달)")
+                break
 
     return model

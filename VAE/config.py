@@ -6,3 +6,4 @@ EPOCHS = 200
 DEVICE = "cuda"
 NUM_EPISODES = 200
 MAX_STEPS = 300
+CHECKPOINT_DIR = "./checkpoints"

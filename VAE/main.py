@@ -11,8 +11,8 @@ from train import train_vae
 print('Dataloading...')
 print('\n')
 #데이터 로딩
-train_images = np.load('./data/train/obs.npy')  # (N, 96, 96, 3)
-val_images = np.load('./data/val/obs.npy')  # (N, 96, 96, 3)
+train_images = np.load('./save_data/train/obs.npy')  # (N, 96, 96, 3)
+val_images = np.load('./save_data/val/obs.npy')  # (N, 96, 96, 3)
 
 train_dataset = ImageDataset(train_images)
 val_dataset = ImageDataset(val_images)
@@ -41,3 +41,4 @@ print('Training complete!')
 print('\n')
 
 
+    
