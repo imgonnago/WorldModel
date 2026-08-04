@@ -5,10 +5,20 @@ import torch.nn as nn
 import torch.nn.functional as F
 import os
 
-def vae_loss(reconstructed, original, mu, logvar):
-    recon_loss = F.mse_loss(reconstructed, original, reduction='sum')
+def vae_loss(reconstructed, original, mu, logvar, beta=config.BETA, blue_weight=config.BLUE_WEIGHT):
+    blue_mask = (
+        (original[:, 2] > 0.85) &
+        (original[:, 0] < 0.40) &
+        (original[:, 1] > 0.35) & (original[:, 1] < 0.60)
+    )
+    blue_mask = blue_mask.unsqueeze(1).float()
+
+    weight_map = torch.ones_like(original)
+    weight_map = weight_map + blue_mask * (blue_weight - 1)
+
+    recon_loss = ((reconstructed - original) ** 2 * weight_map).sum()
     kl_loss = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
-    return recon_loss + kl_loss
+    return recon_loss + beta * kl_loss
 
 
 def save_checkpoint(model, optimizer, epoch, train_loss, val_loss, save_path):
@@ -40,13 +50,14 @@ def train_vae(
     device="cuda",
     checkpoint_dir=config.CHECKPOINT_DIR,
     resume_from=None,
+    beta=config.BETA,
+    patience=config.PATIENCE
 ):
     os.makedirs(checkpoint_dir, exist_ok=True)
     model.to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
     start_epoch = 0
-    patience = 15
     no_improvement_epochs = 0
     best_val_loss = float("inf")
 
@@ -61,7 +72,7 @@ def train_vae(
             batch = batch.to(device)
             optimizer.zero_grad()
             reconstructed, mu, logvar = model(batch)
-            loss = vae_loss(reconstructed, batch, mu, logvar)
+            loss = vae_loss(reconstructed, batch, mu, logvar, beta=beta)
             loss.backward()
             optimizer.step()
             train_loss += loss.item()

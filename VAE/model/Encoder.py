@@ -8,14 +8,14 @@ class Encoder(nn.Module):
 
     self.encoder = nn.Sequential(
         nn.Conv2d(3, 16, kernel_size=4, stride=2, padding=1),
+        nn.BatchNorm2d(16),
         nn.GELU(),
         nn.MaxPool2d(kernel_size=3, stride=1, padding=1),
-        nn.BatchNorm2d(16),
 
         nn.Conv2d(16, 32, kernel_size=4, stride=2, padding=1),
         nn.GELU(),
         nn.MaxPool2d(kernel_size=3, stride=1, padding=1),
-        nn.Dropout(0.4),
+        nn.Dropout(0.2),
 
         nn.Conv2d(32, 64, kernel_size=4, stride=2, padding=1),
         nn.GELU(),
@@ -25,12 +25,7 @@ class Encoder(nn.Module):
         nn.Conv2d(64, 128, kernel_size=4, stride=2, padding=1),
         nn.GELU(),
         nn.MaxPool2d(kernel_size=3, stride=1, padding=1),
-        nn.Dropout(0.4),
-
-        nn.Conv2d(128, 256, kernel_size=4, stride=2, padding=1),
-        nn.GELU(),
-        nn.MaxPool2d(kernel_size=3, stride=1, padding=1),
-        nn.BatchNorm2d(256),
+        nn.BatchNorm2d(128),
 
         nn.Flatten()
     )
@@ -45,5 +40,3 @@ class Encoder(nn.Module):
     logvar = self.fc_logvar(x)
 
     return mu, logvar
-
-    #저장
