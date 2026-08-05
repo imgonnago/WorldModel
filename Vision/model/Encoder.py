@@ -1,7 +1,7 @@
 import config
 import torch.nn as nn
 import torch
-
+# 3*96*96 -> 16*48*48 -> 32*24*24 -> 64*12*12 -> 128*6*6 -> 4608(flatten_dim)
 class Encoder(nn.Module):
   def __init__(self, flatten_dim : int = config.FLATTEN_DIM, output_dim: int = config.LATENT_DIM, ) -> None:
     super().__init__()
@@ -29,9 +29,10 @@ class Encoder(nn.Module):
 
         nn.Flatten()
     )
-
+    #z값을 분포로 압축하기 위해 선형 레이어를 통해 평균과 분산을 계산
+    #평균
     self.fc_mu = nn.Linear(flatten_dim, output_dim)
-
+    #분산
     self.fc_logvar = nn.Linear(flatten_dim, output_dim)
 
   def forward(self, x):

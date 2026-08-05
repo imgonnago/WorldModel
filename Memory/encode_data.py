@@ -1,0 +1,64 @@
+import numpy as np
+import torch 
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from Vision.model.VAE import VAE
+import Memory.config as config
+
+def encode_data(obs_path=config.OBS_TRAIN_DIR, 
+                next_obs_path=config.NEXT_OBS_TRAIN_DIR, 
+                vae_ckpt=config.CKPT_DIR, 
+                save_dir=config.SAVE_DIR, 
+                device=config.DEVICE, 
+                batch_size = config.BATCH_SIZE):
+
+    os.makedirs(save_dir, exist_ok=True)
+    obs = np.load(obs_path)
+    next_obs = np.load(next_obs_path)
+
+    vae = VAE(config.LATENT_DIM, config.FLATTEN_DIM)
+    ckpt = torch.load(vae_ckpt, map_location=device)
+    vae.load_state_dict(ckpt["model_state_dict"])
+    vae.to(device)
+    vae.eval()
+
+    def to_z(images):
+        z_list=[]
+        with torch.no_grad():
+            for i in range(0, len(images), batch_size):
+                batch = images[i:i+batch_size]
+                batch = torch.tensor(batch, dtype=torch.float32) / 255.0
+                batch = batch.permute(0,3,1,2).to(device)
+                mu, logvar = vae.encoder(batch)
+                z_list.append(mu.cpu().numpy())
+        return np.concatenate(z_list, axis=0)
+
+    z = to_z(obs)
+    next_z = to_z(next_obs)
+
+    np.save(f"{save_dir}/z.npy",z)
+    np.save(f"{save_dir}/next_z.npy",next_z)
+
+    if save_dir == "./Worldmodel/z_data/train":
+        print(f"train 인코딩 완료: z shape {z.shape}, next_z shape {next_z.shape}")
+    if save_dir == "./Worldmodel/z_data/val":
+        print(f"val 인코딩 완료: z shape {z.shape}, next_z shape {next_z.shape}")
+
+if __name__ == "__main__":
+
+    encode_data(
+        obs_path=config.OBS_TRAIN_DIR,
+        next_obs_path=config.NEXT_OBS_TRAIN_DIR,
+        vae_ckpt=config.CKPT_DIR,
+        save_dir=config.Z_TRAIN_DIR,
+        device=config.DEVICE,
+    )
+
+    encode_data(
+        obs_path=config.OBS_VAL_DIR,
+        next_obs_path=config.NEXT_OBS_VAL_DIR,
+        vae_ckpt=config.CKPT_DIR,
+        save_dir=config.Z_VAL_DIR,
+        device=config.DEVICE,
+    )

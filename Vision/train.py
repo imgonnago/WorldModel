@@ -6,6 +6,7 @@ import torch.nn.functional as F
 import os
 
 def vae_loss(reconstructed, original, mu, logvar, beta=config.BETA, blue_weight=config.BLUE_WEIGHT):
+    # 파란 점(에이전트) 영역에 대한 가중치를 적용한 MSE 손실 계산
     blue_mask = (
         (original[:, 2] > 0.85) &
         (original[:, 0] < 0.40) &
@@ -15,8 +16,9 @@ def vae_loss(reconstructed, original, mu, logvar, beta=config.BETA, blue_weight=
 
     weight_map = torch.ones_like(original)
     weight_map = weight_map + blue_mask * (blue_weight - 1)
-
+    # 원본 이미지와 재구성 이미지 간의 MSE 손실 계산
     recon_loss = ((reconstructed - original) ** 2 * weight_map).sum()
+    # KL divergence는 평균과 분산을 사용하여 계산
     kl_loss = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
     return recon_loss + beta * kl_loss
 
