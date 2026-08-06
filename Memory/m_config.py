@@ -10,6 +10,8 @@ CKPT_DIR = "./checkpoints/best_checkpoint.pth"
 DEVICE = 'cuda'
 BATCH_SIZE = 256
 SAVE_DIR = "./Worldmodel/z_data"
-Z_VAL_DIR = "./Worldmodel/z_data/val"
-Z_TRAIN_DIR = "./Worldmodel/z_data/train"
-
+Z_VAL_DIR = "./z_data/val/z.npy"
+Z_TRAIN_DIR = "./z_data/train/z.npy"
+NEXT_Z_TRAIN_DIR = "./z_data/train/next_z.npy"
+NEXT_Z_VAL_DIR = "./z_data/val/next_z.npy"
+SEQUENCE_LEN = 30

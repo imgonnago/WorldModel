@@ -1,10 +1,10 @@
 import torch
 import torch.nn as nn
-import config
+import Vision.v_config as v_config
 # 4608(flatten_dim) -> 128*6*6 -> 64*12*12 -> 32*24*24 -> 16*48*48 -> 3*96*96
 # Conv2d로 줄였던 채널을 다시 ConvTranspose2d로 늘려서 원래 이미지 크기로 복원
 class Decoder(nn.Module):
-  def __init__(self, latent_dim: int = config.LATENT_DIM, flatten_dim: int = config.FLATTEN_DIM) -> None:
+  def __init__(self, latent_dim: int = v_config.LATENT_DIM, flatten_dim: int = v_config.FLATTEN_DIM) -> None:
     super().__init__()
 
     self.decoder = nn.Sequential(

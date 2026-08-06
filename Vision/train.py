@@ -1,11 +1,11 @@
 import torch
 import numpy as np
-import config
+import Vision.v_config as v_config
 import torch.nn as nn
 import torch.nn.functional as F
 import os
 
-def vae_loss(reconstructed, original, mu, logvar, beta=config.BETA, blue_weight=config.BLUE_WEIGHT):
+def vae_loss(reconstructed, original, mu, logvar, beta=v_config.BETA, blue_weight=v_config.BLUE_WEIGHT):
     # 파란 점(에이전트) 영역에 대한 가중치를 적용한 MSE 손실 계산
     blue_mask = (
         (original[:, 2] > 0.85) &
@@ -50,10 +50,10 @@ def train_vae(
     epochs=20,
     lr=1e-4,
     device="cuda",
-    checkpoint_dir=config.CHECKPOINT_DIR,
+    checkpoint_dir=v_config.CHECKPOINT_DIR,
     resume_from=None,
-    beta=config.BETA,
-    patience=config.PATIENCE
+    beta=v_config.BETA,
+    patience=v_config.PATIENCE
 ):
     os.makedirs(checkpoint_dir, exist_ok=True)
     model.to(device)

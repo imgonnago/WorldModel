@@ -2,22 +2,21 @@ import numpy as np
 import torch 
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from Vision.model.VAE import VAE
-import Memory.config as config
+from Vision.v_model.VAE import VAE
+import Memory.m_config as m_config
 
-def encode_data(obs_path=config.OBS_TRAIN_DIR, 
-                next_obs_path=config.NEXT_OBS_TRAIN_DIR, 
-                vae_ckpt=config.CKPT_DIR, 
-                save_dir=config.SAVE_DIR, 
-                device=config.DEVICE, 
-                batch_size = config.BATCH_SIZE):
+def encode_data(obs_path=m_config.OBS_TRAIN_DIR, 
+                next_obs_path=m_config.NEXT_OBS_TRAIN_DIR, 
+                vae_ckpt=m_config.CKPT_DIR, 
+                save_dir=m_config.SAVE_DIR, 
+                device=m_config.DEVICE, 
+                batch_size = m_config.BATCH_SIZE):
 
     os.makedirs(save_dir, exist_ok=True)
     obs = np.load(obs_path)
     next_obs = np.load(next_obs_path)
 
-    vae = VAE(config.LATENT_DIM, config.FLATTEN_DIM)
+    vae = VAE(m_config.LATENT_DIM, m_config.FLATTEN_DIM)
     ckpt = torch.load(vae_ckpt, map_location=device)
     vae.load_state_dict(ckpt["model_state_dict"])
     vae.to(device)
@@ -48,17 +47,17 @@ def encode_data(obs_path=config.OBS_TRAIN_DIR,
 if __name__ == "__main__":
 
     encode_data(
-        obs_path=config.OBS_TRAIN_DIR,
-        next_obs_path=config.NEXT_OBS_TRAIN_DIR,
-        vae_ckpt=config.CKPT_DIR,
-        save_dir=config.Z_TRAIN_DIR,
-        device=config.DEVICE,
+        obs_path=m_config.OBS_TRAIN_DIR,
+        next_obs_path=m_config.NEXT_OBS_TRAIN_DIR,
+        vae_ckpt=m_config.CKPT_DIR,
+        save_dir=m_config.Z_TRAIN_DIR,
+        device=m_config.DEVICE,
     )
 
     encode_data(
-        obs_path=config.OBS_VAL_DIR,
-        next_obs_path=config.NEXT_OBS_VAL_DIR,
-        vae_ckpt=config.CKPT_DIR,
-        save_dir=config.Z_VAL_DIR,
-        device=config.DEVICE,
+        obs_path=m_config.OBS_VAL_DIR,
+        next_obs_path=m_config.NEXT_OBS_VAL_DIR,
+        vae_ckpt=m_config.CKPT_DIR,
+        save_dir=m_config.Z_VAL_DIR,
+        device=m_config.DEVICE,
     )

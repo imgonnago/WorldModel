@@ -4,11 +4,11 @@ import gymnasium as gym
 import gym_pusht
 import numpy as np
 import os
-import config
+import Vision.v_config as v_config
 
 def collect_random_rollouts(
         num_episodes: int = None,
-        max_steps: int = config.MAX_STEPS,
+        max_steps: int = v_config.MAX_STEPS,
         save_dir: str = None,
         smoothing_std: float = 15.0,   # action이 이전 값에서 얼마나 벗어날지 (범위 0~512 기준)
     ):

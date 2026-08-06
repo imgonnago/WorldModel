@@ -1,9 +1,9 @@
-import config
+import Vision.v_config as v_config
 import torch.nn as nn
 import torch
 # 3*96*96 -> 16*48*48 -> 32*24*24 -> 64*12*12 -> 128*6*6 -> 4608(flatten_dim)
 class Encoder(nn.Module):
-  def __init__(self, flatten_dim : int = config.FLATTEN_DIM, output_dim: int = config.LATENT_DIM, ) -> None:
+  def __init__(self, flatten_dim : int = v_config.FLATTEN_DIM, output_dim: int = v_config.LATENT_DIM, ) -> None:
     super().__init__()
 
     self.encoder = nn.Sequential(

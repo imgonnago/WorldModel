@@ -1,11 +1,11 @@
 import torch.nn as nn
 import torch
-import config
+import Vision.v_config as v_config
 from .Decoder import Decoder
 from .Encoder import Encoder
 
 class VAE(nn.Module):
-  def __init__(self, latent_dim: int = config.LATENT_DIM, flatten_dim: int = config.FLATTEN_DIM) -> None:
+  def __init__(self, latent_dim: int = v_config.LATENT_DIM, flatten_dim: int = v_config.FLATTEN_DIM) -> None:
     super().__init__()
     
     self.encoder = Encoder(flatten_dim, latent_dim)
