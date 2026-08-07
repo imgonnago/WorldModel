@@ -37,10 +37,5 @@ trained_vae = train_vae(
 )
 print('Training complete!')
 print('\n')
-"""print("show reconstruction...")
-print('\n')
-show_reconstruction()`
-print("show reconstruction complete!")
-"""
 
     

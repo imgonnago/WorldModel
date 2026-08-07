@@ -1,0 +1,7 @@
+# pyproject.toml
+[project]
+name = "worldmodel"
+version = "0.1"
+
+[tool.setuptools]
+packages = ["Vision", "Memory"]
