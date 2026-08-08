@@ -37,14 +37,14 @@ class SequenceDataset(Dataset):
 
 def get_datasets(episode_len=300, seq_len=m_config.SEQUENCE_LEN):
         train_dataset = SequenceDataset(
-            z=m_config.Z_TRAIN_DIR,
+            z=m_config.Z_DATA_TRAIN_DIR,
             actions=m_config.ACTION_TRAIN_DIR,
             next_z=m_config.NEXT_Z_TRAIN_DIR,
             episode_len=episode_len,
             seq_len=seq_len,
         )
         val_dataset = SequenceDataset(
-            z=m_config.Z_VAL_DIR,
+            z=m_config.Z_DATA_VAL_DIR,
             actions=m_config.ACTION_VAL_DIR,
             next_z=m_config.NEXT_Z_VAL_DIR,
             episode_len=episode_len,

@@ -39,9 +39,9 @@ def encode_data(obs_path=m_config.OBS_TRAIN_DIR,
     np.save(f"{save_dir}/z.npy",z)
     np.save(f"{save_dir}/next_z.npy",next_z)
 
-    if save_dir == "./Worldmodel/z_data/train":
+    if save_dir == "/z_data/train":
         print(f"train 인코딩 완료: z shape {z.shape}, next_z shape {next_z.shape}")
-    if save_dir == "./Worldmodel/z_data/val":
+    if save_dir == "./z_data/val":
         print(f"val 인코딩 완료: z shape {z.shape}, next_z shape {next_z.shape}")
 
 if __name__ == "__main__":

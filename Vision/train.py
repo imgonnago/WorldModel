@@ -48,7 +48,7 @@ def train_vae(
     train_loader,
     val_loader,
     epochs=20,
-    lr=1e-4,
+    lr=1e-2,
     device="cuda",
     checkpoint_dir=v_config.CHECKPOINT_DIR,
     resume_from=None,
@@ -58,9 +58,11 @@ def train_vae(
     os.makedirs(checkpoint_dir, exist_ok=True)
     model.to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=5)
+    
 
     start_epoch = 0
-    no_improvement_epochs = 0
+    no_improvement_count = 0
     best_val_loss = float("inf")
 
     if resume_from is not None and os.path.exists(resume_from):
@@ -88,12 +90,13 @@ def train_vae(
             for batch in val_loader:
                 batch = batch.to(device)
                 reconstructed, mu, logvar = model(batch)
-                loss = vae_loss(reconstructed, batch, mu, logvar)
+                loss = vae_loss(reconstructed, batch, mu, logvar, beta=v_config.BETA)
                 val_loss += loss.item()
 
         avg_val_loss = val_loss / len(val_loader.dataset)
-
-        print(f"Epoch {epoch+1}/{epochs} - Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}")
+        scheduler.step(avg_val_loss)   # ← 이 줄 추가
+        current_lr = optimizer.param_groups[0]['lr']
+        print(f"Epoch {epoch+1}/{epochs} - Train: {avg_train_loss:.4f}, Val: {avg_val_loss:.4f}, LR: {current_lr:.6f}")        
 
         # --- 매 epoch마다 최신 체크포인트 저장 (재개용) ---
         save_checkpoint(
