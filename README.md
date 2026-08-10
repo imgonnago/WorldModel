@@ -14,6 +14,7 @@
 ---
 ## 코드 설명
 
+```
 WorldModel/
 ├── Memory/                     # M 모듈 (LSTM 기반 월드 모델)
 │   ├── m_model/
@@ -55,7 +56,7 @@ WorldModel/
 ├── predicted.png               # M 모듈 예측 결과 샘플
 ├── pyproject.toml
 ├── README.md
-└── reconstruction.png    
-
+└── reconstruction.png          # V 모듈 재구성 결과 샘플
+```
 ## 참고 논문
 World Model: https://arxiv.org/pdf/1803.10122
