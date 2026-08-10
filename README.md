@@ -2,15 +2,60 @@
 
 ## 프로젝트 개요
 
-- 최근 VLA 중에서 World Model이라는 모델이 뜨고있음. 개념은 어떤 상황을 통해 다음 상황을 예측한다는 것. 단순히 행동만 예측하는것이 아닌 모든 물리법칙을 고려하여 환경까지 예측함. 즉 환경의 상태를 고려한 행동을 예측하는것.
+- 최근 VLA 중에서 World Model이라는 모델이 뜨고있음. 현재의 상태와 환경을 보고 다음 환경을 예측하고 다음 액션을 도출하는 모델임. 단순히 행동만 예측하는것이 아닌 모든 물리법칙을 고려하여 환경까지 예측함. 즉 환경의 상태를 고려한 행동을 예측하는것.
 - 모델은 V(Vision), M(Memory,Prediction), C(Control) 세 가지 부분으로 나뉨.
 - 최종적으론 3가지 모델을 합쳐서 상황에 대한 다음 상황을 예측하고 다음 행동을 결정하는 모델.
 ---
 
-- V(Vision): 말 그대로 Vision encoder를 사용해서 영상을 프레임 단위로 쪼개서 벡터형태로 더한 후 M으로 넘어감. 여기에선 CNN 모델을 사용할 예정.
-- M(memory,Prediction): 이 부분은 기억을 하고 예측을 하는 단계. 이전 행동들을 기억하는 능력이 필요하고 이를 토대로 다음 상황을 예측해야함. 여기에선 RNN이나 Transformer를 사용할 예정.
-- C(control): 이 부분은 논문에선 간단한 선형 linear 모델을 사용함. 행동을 뽑아내는 부분.
+- V(Vision): high dimension observation을 low dimension latant vector로 인코딩(z). 출력은 이미지를 latant dim z값으로 압축한 값. 
+- M(memory,Prediction): 과거의 요소들로 미래의 환경을 예측하는 모델. 입력은 V에서 압축한 z값을 받고, 출력은 예측한 z값. 
+- C(control): V,M을 통해 좋은 액션을 선택하는 작은 모델. 해당 논문에선 Linear레이어 하나를 사용함. 본 프로젝트는 일단 V,M 까지 설계하는 것을 목표로 함.
 
 ---
+## 코드 설명
+
+WorldModel/
+├── Memory/                     # M 모듈 (LSTM 기반 월드 모델)
+│   ├── m_model/
+│   │   ├── __init__.py
+│   │   └── LSTM.py             # LSTM 모델 정의
+│   ├── __init__.py
+│   ├── encode_data.py          # 잠재 벡터 인코딩
+│   ├── lstm_show_result.py     # 예측 결과 시각화
+│   ├── m_config.py             # M 모듈 하이퍼파라미터
+│   ├── main.py
+│   ├── SequenceDataset.py      # 시퀀스 데이터셋
+│   └── train.py                # M 모듈 학습
+│
+├── Vision/                     # V 모듈 (VAE 기반 시각 인코더)
+│   ├── Data/
+│   │   ├── __init__.py
+│   │   └── Dataset.py          # 데이터셋 정의
+│   ├── v_model/
+│   │   ├── __init__.py
+│   │   ├── Decoder.py          # VAE 디코더
+│   │   ├── Encoder.py          # VAE 인코더
+│   │   └── VAE.py              # VAE 전체 모델
+│   ├── __init__.py
+│   ├── Collect.py              # 데이터 수집
+│   ├── main.py
+│   ├── show_result.py          # 재구성 결과 시각화
+│   ├── train.py                # V 모듈 학습
+│   └── v_config.py             # V 모듈 하이퍼파라미터
+│
+├── z_data/                     # VAE 인코딩된 잠재 벡터 데이터
+│   ├── train/
+│   │   ├── next_z.npy
+│   │   └── z.npy
+│   └── val/
+│       ├── next_z.npy
+│       └── z.npy
+│
+├── .gitignore
+├── predicted.png               # M 모듈 예측 결과 샘플
+├── pyproject.toml
+├── README.md
+└── reconstruction.png    
+
 ## 참고 논문
 World Model: https://arxiv.org/pdf/1803.10122
