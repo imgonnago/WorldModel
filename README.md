@@ -14,49 +14,89 @@
 ---
 ## 코드 설명
 
-```
-WorldModel/
-├── Memory/                     # M 모듈 (LSTM 기반 월드 모델)
-│   ├── m_model/
-│   │   ├── __init__.py
-│   │   └── LSTM.py             # LSTM 모델 정의
-│   ├── __init__.py
-│   ├── encode_data.py          # 잠재 벡터 인코딩
-│   ├── lstm_show_result.py     # 예측 결과 시각화
-│   ├── m_config.py             # M 모듈 하이퍼파라미터
-│   ├── main.py
-│   ├── SequenceDataset.py      # 시퀀스 데이터셋
-│   └── train.py                # M 모듈 학습
-│
-├── Vision/                     # V 모듈 (VAE 기반 시각 인코더)
-│   ├── Data/
-│   │   ├── __init__.py
-│   │   └── Dataset.py          # 데이터셋 정의
-│   ├── v_model/
-│   │   ├── __init__.py
-│   │   ├── Decoder.py          # VAE 디코더
-│   │   ├── Encoder.py          # VAE 인코더
-│   │   └── VAE.py              # VAE 전체 모델
-│   ├── __init__.py
-│   ├── Collect.py              # 데이터 수집
-│   ├── main.py
-│   ├── show_result.py          # 재구성 결과 시각화
-│   ├── train.py                # V 모듈 학습
-│   └── v_config.py             # V 모듈 하이퍼파라미터
-│
-├── z_data/                     # VAE 인코딩된 잠재 벡터 데이터
-│   ├── train/
-│   │   ├── next_z.npy
-│   │   └── z.npy
-│   └── val/
-│       ├── next_z.npy
-│       └── z.npy
-│
-├── .gitignore
-├── predicted.png               # M 모듈 예측 결과 샘플
-├── pyproject.toml
-├── README.md
-└── reconstruction.png          # V 모듈 재구성 결과 샘플
-```
+<details>
+<summary>📁 WORLDMODEL</summary>
+
+<details>
+<summary>📁 Memory</summary>
+
+<details>
+<summary>📁 m_model</summary>
+
+- `__init__.py`
+- `LSTM.py`
+
+</details>
+
+- `__init__.py`
+- `encode_data.py`
+- `lstm_show_result.py`
+- `m_config.py`
+- `main.py`
+- `SequenceDataset.py`
+- `train.py`
+
+</details>
+
+<details>
+<summary>📁 Vision</summary>
+
+<details>
+<summary>📁 Data</summary>
+
+- `__init__.py`
+- `Dataset.py`
+
+</details>
+
+<details>
+<summary>📁 v_model</summary>
+
+- `__init__.py`
+- `Decoder.py`
+- `Encoder.py`
+- `VAE.py`
+
+</details>
+
+- `__init__.py`
+- `Collect.py`
+- `main.py`
+- `show_result.py`
+- `train.py`
+- `v_config.py`
+
+</details>
+
+<details>
+<summary>📁 z_data</summary>
+
+<details>
+<summary>📁 train</summary>
+
+- `next_z.npy`
+- `z.npy`
+
+</details>
+
+<details>
+<summary>📁 val</summary>
+
+- `next_z.npy`
+- `z.npy`
+
+</details>
+
+</details>
+
+- `checkpoints/`
+- `.gitignore`
+- `predicted.png`
+- `pyproject.toml`
+- `README.md`
+- `reconstruction.png`
+
+</details>
+
 ## 참고 논문
 World Model: https://arxiv.org/pdf/1803.10122
