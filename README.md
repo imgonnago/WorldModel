@@ -99,5 +99,16 @@ V 모듈에서 VAE를 학습을 시킴.
 
 </details>
 
+## 성능
+
+| Model | epochs | train loss | val loss | 
+|-------|--------|------------|----------|
+| VAE | 95 | 15.0893 | 6.6171 |
+| LSTM | 497 | 15.9591 | 18.1231 |
+
+## Result
+[reconsstructure](https://github.com/user-attachments/assets/41b92148-bc43-4a93-b6dd-d11275b3c7c3)
+> 오리지널 이미지와 VAE로 복원한 이미지를 시각화. 
+
 ## 참고 논문
 World Model: https://arxiv.org/pdf/1803.10122
