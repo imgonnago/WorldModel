@@ -11,7 +11,7 @@
 - M(memory,Prediction): 과거의 요소들로 미래의 환경을 예측하는 모델. 입력은 V에서 압축한 z값을 받고, 출력은 예측한 z값. 
 - C(control): V,M을 통해 좋은 액션을 선택하는 작은 모델. 해당 논문에선 Linear레이어 하나를 사용함. 본 프로젝트는 일단 V,M 까지 설계하는 것을 목표로 함.
 
----
+
 ## 코드 설명
 
 <details>
@@ -101,10 +101,12 @@ V 모듈에서 VAE를 학습을 시킴.
 
 ## 성능
 ![reconsstructure](https://github.com/user-attachments/assets/41b92148-bc43-4a93-b6dd-d11275b3c7c3)
-> 오리지널 이미지와 VAE로 복원한 이미지를 시각화
+- 오리지널 이미지와 VAE로 복원한 이미지를 시각화
 
 ![predicted](https://github.com/user-attachments/assets/97363bc6-a1f0-4ebc-9d26-3b2862ef2746)
-> LSTM으로 예측한 z값을 Decoder로 복원한 시각화 이미지
+- LSTM으로 예측한 z값을 Decoder로 복원한 시각화 이미지
+
+- 학습 성능표
 
 | Model | epochs | train loss | val loss | 
 |-------|--------|------------|----------|
