@@ -100,17 +100,16 @@ V 모듈에서 VAE를 학습을 시킴.
 </details>
 
 ## 개선점
-기존 CNN기반의 VAE 모델은 train loss가 val loss보다 낮고 train loss가 16.xxx 대로 완전히 학습되지 않는 문제가 있었음.
+기존 CNN기반의 VAE 모델은 train loss가 val loss보다 높고 train loss가 16.xxx 대로 완전히 학습되지 않는 문제가 있었음.
 이를 해결하고자 U-net 구조의 skip층을 사용하여 encoder 레이어 마다 출력값을 decoder의 레이어에 concat 해주고 입력으로 사용함.
+그리고 latent dim을 48에서 24로 대폭 축소 시킴. 너무 큰 잠재 공간은 PushT 같은 단순한 이미지와 문제에서 너무 낭비되고 복잡한 결과를 낼거라고 생각.
 
+### 기존 CNN 기반 VAE 모델 summary
 ![old_model_structure](https://github.com/user-attachments/assets/4421adf1-4893-43a8-ba01-c4c40893b8ca)
 
--> 기존 CNN 기반 VAE 모델 summary
-
+### U-net 기반 VAE 모델 summary
 ![unet_structure](https://github.com/user-attachments/assets/710267aa-f704-4ec2-ad58-c64c31f23368)
-
--> U-net 기반 VAE 모델 summary
-- 기존 CNN과 달리 각 층을 block으로 나눠 정의하고 각 층의 출력을 반환하여 decoder에 concat하여 입력으로 들어
+- 기존 CNN과 달리 각 층을 block으로 나눠 정의하고 각 층의 출력을 반환하여 decoder에 concat하여 입력으로 들어감
 
 
 ## 성능
@@ -121,6 +120,10 @@ V 모듈에서 VAE를 학습을 시킴.
 - LSTM으로 예측한 z값을 Decoder로 복원한 시각화 이미지
 
 - 학습 성능표
+
+Epoch 138/1000 - Train: 3.6281, Val: 3.3629, LR: 0.000001
+  → 베스트 모델 갱신 (val loss: 3.3629)
+-> unet 구조 학습결과
 
 | Model | epochs | train loss | val loss | 
 |-------|--------|------------|----------|
