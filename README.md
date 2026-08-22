@@ -99,6 +99,20 @@ V 모듈에서 VAE를 학습을 시킴.
 
 </details>
 
+## 개선점
+기존 CNN기반의 VAE 모델은 train loss가 val loss보다 낮고 train loss가 16.xxx 대로 완전히 학습되지 않는 문제가 있었음.
+이를 해결하고자 U-net 구조의 skip층을 사용하여 encoder 레이어 마다 출력값을 decoder의 레이어에 concat 해주고 입력으로 사용함.
+
+![old_model_structure](https://github.com/user-attachments/assets/4421adf1-4893-43a8-ba01-c4c40893b8ca)
+
+-> 기존 CNN 기반 VAE 모델 summary
+
+![unet_structure](https://github.com/user-attachments/assets/710267aa-f704-4ec2-ad58-c64c31f23368)
+
+-> U-net 기반 VAE 모델 summary
+- 기존 CNN과 달리 각 층을 block으로 나눠 정의하고 각 층의 출력을 반환하여 decoder에 concat하여 입력으로 들어
+
+
 ## 성능
 ![reconsstructure](https://github.com/user-attachments/assets/41b92148-bc43-4a93-b6dd-d11275b3c7c3)
 - 오리지널 이미지와 VAE로 복원한 이미지를 시각화
