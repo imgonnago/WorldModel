@@ -20,9 +20,9 @@ class VAE(nn.Module):
     return z
 
   def forward(self, x):
-    mu, logvar = self.encoder(x)
+    mu, logvar, conv1, conv2, conv3 = self.encoder(x)
     z = self.reparameterize(mu, logvar)
-    decoded_result = self.decoder(z)
+    decoded_result = self.decoder(z, conv1, conv2, conv3)
 
     return decoded_result, mu, logvar
 

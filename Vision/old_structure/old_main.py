@@ -5,10 +5,9 @@ import torch
 from torchinfo import summary
 import Vision.v_config as v_config
 from torch.utils.data import Dataset, DataLoader
-from v_model.VAE import VAE
-from Data.Dataset import ImageDataset
-from train import train_vae
-import random
+from Vision.old_structure.old_VAE import old_VAE
+from Vision.Data.Dataset import ImageDataset
+from Vision.train import train_vae
 
 print('Dataloading...')
 print('\n')
@@ -28,7 +27,7 @@ print('\n')
 print('VAE Model loading...')
 print('\n')
 #모델 로딩
-vae = VAE(latent_dim = v_config.LATENT_DIM, flatten_dim = v_config.FLATTEN_DIM)
+vae = old_VAE(latent_dim = v_config.LATENT_DIM, flatten_dim = v_config.FLATTEN_DIM)
 print('Model loading complete.')
 print('\n')
 summary(vae, input_size=(2,3,96,96))
@@ -38,18 +37,7 @@ print('\n')
 trained_vae, trained_loss, val_loss = train_vae(
     vae, train_dataloader, val_dataloader,
     epochs=v_config.EPOCHS, lr=v_config.LR, device=v_config.DEVICE,
-    checkpoint_dir=v_config.CHECKPOINT_DIR,
+    checkpoint_dir="./checkpoints/old_vae",
 )
 print('Training complete!')
 print('\n')
-print("train loss/val loss graph")
-
-random_num = random.randint(0,100)
-plt.plot(trained_loss, label='train loss')
-plt.plot(val_loss, label='val loss')
-plt.title("Model Fitting loss")
-plt.xlabel("Epoch")
-plt.ylabel("loss") 
-plt.legend()
-plt.savefig(f"C:/Users/zxfg0/WorldModel/figures/VAEModelLoss{random_num}.png")
-plt.show   

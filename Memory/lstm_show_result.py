@@ -2,7 +2,7 @@ import numpy as np
 import torch
 from m_model.LSTM import LSTM
 import m_config
-from Vision.v_model.Decoder import Decoder
+from Vision.old_structure.old_Decoder import old_Decoder
 from Vision import v_config
 from SequenceDataset import get_datasets
 from torch.utils.data import DataLoader
@@ -26,7 +26,7 @@ lstm.load_state_dict(lstm_checkpoint["model_state_dict"])
 lstm.to("cuda")
 lstm.eval()
 
-decoder = Decoder(latent_dim=v_config.LATENT_DIM, flatten_dim=v_config.FLATTEN_DIM)
+decoder = old_Decoder(latent_dim=v_config.LATENT_DIM, flatten_dim=v_config.FLATTEN_DIM)
 v_checkpoint = torch.load(f'{v_config.CHECKPOINT_DIR}/best_checkpoint.pth', map_location=m_config.DEVICE)
 decoder_state_dict = {
     k[len("decoder."):]: v
@@ -61,5 +61,5 @@ axes[0].imshow(actual_image[0].cpu().permute(1, 2, 0))
 axes[0].set_title("Actual Next State")
 axes[1].imshow(predicted_image[0].cpu().permute(1, 2, 0))
 axes[1].set_title("Predicted Next State")
-plt.savefig("C:/Users/zxfg0/WorldModel/predicted.png")
+plt.savefig("C:/Users/zxfg0/WorldModel/figures/predicted_u-net_version.png")
 plt.show()

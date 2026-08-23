@@ -46,6 +46,8 @@ def train_lstm(
     start_epoch = 0
     best_val_loss = float("inf")
     no_improve_count = 0
+    train_loss_history = []
+    val_loss_history = []
 
     if resume_from is not None and os.path.exists(resume_from):
         model, optimizer, start_epoch = load_checkpoint(model, optimizer, resume_from, device)
@@ -67,7 +69,7 @@ def train_lstm(
             train_loss += loss.item()
 
         avg_train_loss = train_loss / len(train_loader.dataset)
-
+        train_loss_history.append(avg_train_loss)
         # --- Validation ---
         model.eval()
         val_loss = 0
@@ -82,7 +84,7 @@ def train_lstm(
                 val_loss += loss.item()
 
         avg_val_loss = val_loss / len(val_loader.dataset)
-
+        val_loss_history.append(avg_val_loss)
         print(f"Epoch {epoch+1}/{epochs} - Train Loss: {avg_train_loss:.4f}, Val Loss: {avg_val_loss:.4f}")
 
         save_checkpoint(
@@ -104,4 +106,4 @@ def train_lstm(
                 print(f"Early stopping at epoch {epoch+1} (patience={patience} 도달)")
                 break
 
-    return model
+    return model, train_loss_history, val_loss_history

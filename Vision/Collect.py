@@ -55,17 +55,17 @@ def collect_random_rollouts(
         np.save(os.path.join(save_dir, "next_obs.npy"), next_obs_array)
 
         if save_dir == "./save_data/train":    
-            print(f"train set 저장 완료: {obs_array.shape[0]}개 스텩")
+            print(f"train set 저장 완료: {obs_array.shape[0]}개 스텝")
             print(f"train  obs shape: {obs_array.shape}")
             print(f"train  action shape: {action_array.shape}")
             
         if save_dir == "./save_data/val":    
-            print(f"val set 저장 완료: {obs_array.shape[0]}개 스텩")
+            print(f"val set 저장 완료: {obs_array.shape[0]}개 스텝")
             print(f"val  obs shape: {obs_array.shape}")
             print(f"val  action shape: {action_array.shape}")
 
         return obs_array, action_array, next_obs_array
 
 if __name__ == "__main__":
-    collect_random_rollouts(num_episodes=1000, save_dir = "./save_data/train")
-    collect_random_rollouts(num_episodes=100, save_dir = "./save_data/val")
+    collect_random_rollouts(num_episodes=3200, save_dir = "./save_data/train")
+    collect_random_rollouts(num_episodes=800, save_dir = "./save_data/val")

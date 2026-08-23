@@ -1,14 +1,15 @@
 import os
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
-LATENT_DIM = 48
+LATENT_DIM = 24
 FLATTEN_DIM = 4608
 BATCH_SIZE = 64
-LR = 1e-3
+LR = 1e-4
 EPOCHS = 1000
 DEVICE = "cuda"
 NUM_EPISODES = 200
 MAX_STEPS = 300
 CHECKPOINT_DIR = "./checkpoints"
-BETA = 0.1
-BLUE_WEIGHT = 5.0  
-PATIENCE = 20  
+OLD_CHECKPOINT_DIR = "./checkpoints/old_vae"
+BETA = 1
+BLUE_WEIGHT = 7.0  
+PATIENCE = 30  

@@ -29,7 +29,7 @@ def encode_data(obs_path=m_config.OBS_TRAIN_DIR,
                 batch = images[i:i+batch_size]
                 batch = torch.tensor(batch, dtype=torch.float32) / 255.0
                 batch = batch.permute(0,3,1,2).to(device)
-                mu, logvar = vae.encoder(batch)
+                mu, logvar, _, _, _ = vae.encoder(batch)
                 z_list.append(mu.cpu().numpy())
         return np.concatenate(z_list, axis=0)
 

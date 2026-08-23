@@ -3,6 +3,9 @@ from torch.utils.data import DataLoader
 from m_model.LSTM import LSTM
 from train import train_lstm
 from SequenceDataset import get_datasets
+from torchinfo import summary
+import random
+import matplotlib.pyplot as plt
 
 
 print("=========LSTM train run=========")
@@ -21,7 +24,8 @@ print('\n')
 
 print("model load")
 
-lstm = LSTM(action_dim=m_config.ACTION_DIM, hidden_size=m_config.HIDDEN_SIZE)
+lstm, trained_loss, val_loss = LSTM(action_dim=m_config.ACTION_DIM, hidden_size=m_config.HIDDEN_SIZE)
+summary(lstm)
 
 print("model LSTM loaded")
 print("\n")
@@ -40,4 +44,13 @@ lstm = train_lstm(
 )
 
 print("model train complete!")
+random_num = random.randint(0,100)
+plt.plot(trained_loss, label='train loss')
+plt.plot(val_loss, label='val loss')
+plt.title("Model Fitting loss")
+plt.xlabel("Epoch")
+plt.ylabel("loss") 
+plt.legend()
+plt.savefig(f"C:/Users/zxfg0/WorldModel/figures/LSTMModelLoss{random_num}.png")
+plt.show   
 
