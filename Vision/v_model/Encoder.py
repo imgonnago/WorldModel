@@ -22,16 +22,16 @@ class Encoder(nn.Module):
 
     self.block3 = nn.Sequential(
         nn.Conv2d(32, 64, kernel_size=4, stride=2, padding=1),
+        nn.BatchNorm2d(64),
         nn.GELU(),
         nn.MaxPool2d(kernel_size=3, stride=1, padding=1),
-        nn.BatchNorm2d(64),
     )
 
     self.block4 = nn.Sequential(
         nn.Conv2d(64, 128, kernel_size=4, stride=2, padding=1),
+        nn.BatchNorm2d(128),
         nn.GELU(),
         nn.MaxPool2d(kernel_size=3, stride=1, padding=1),
-        nn.BatchNorm2d(128),
     )
 
     self.flatten = nn.Flatten()

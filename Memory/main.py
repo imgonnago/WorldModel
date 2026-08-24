@@ -44,7 +44,8 @@ lstm = train_lstm(
 )
 
 print("model train complete!")
-random_num = random.randint(0,100)
+
+random_num = random.randint(0,500)
 plt.plot(trained_loss, label='train loss')
 plt.plot(val_loss, label='val loss')
 plt.title("Model Fitting loss")
