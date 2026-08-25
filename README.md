@@ -100,7 +100,7 @@ V 모듈에서 VAE를 학습을 시킴. U-Net 구조(skip connection)를 적용�
 
 ### LSTM 모델 summary
 ![LSTM Model](https://github.com/user-attachments/assets/39680469-1328-4e33-a62c-65af5f4b2d47)
-- 너무 단순한 환경과 이미지를 예측하기 때문에 간단하게 레이어 1개로 구성.
+> 너무 단순한 환경과 이미지를 예측하기 때문에 간단하게 레이어 1개로 구성.
 
 ---
 
@@ -108,7 +108,8 @@ V 모듈에서 VAE를 학습을 시킴. U-Net 구조(skip connection)를 적용�
 ![reconsstructure](https://github.com/user-attachments/assets/41b92148-bc43-4a93-b6dd-d11275b3c7c3)
 > 기본 CNN 기반 VAE 모델로 오리지널 이미지와 복원한 이미지 시각화
 
-![predicted](https://github.com/user-attachments/assets/78a666cf-5ff4-4424-b125-142be47c3412)
+![predicted](https://github.com/user-attachments/assets/b73b5382-7be9-4b23-b77a-4e6d7730a137)
+![predicted1](https://github.com/user-attachments/assets/140cb37b-4c12-48fa-bf93-88393fc8007d)
 > LSTM으로 예측한 z값을 Decoder로 복원한 시각화 이미지
 
 
