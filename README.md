@@ -130,7 +130,7 @@ V 모듈에서 VAE를 학습을 시킴. U-Net 구조(skip connection)를 적용�
 이미지에서 에이전트가 없거나 회색 T가 없어지거나 흐려지는 현상이 많았음.
 CNN 구조에서 low, mid, high level의 특징을 잘 표현하지 못했고, 단순한 이미지에 비해 latent dim이 커서 제대로 잠재 공간을 표현하지 못함.
 
--> latent dim의 크기를 줄이고, 학습 단계에서 train이 더 잘되도록 U-net 구조를 활용하여 encoder에서 decoder까지 conv레이어의 값이 잘 전달되도록 개선.
+-> latent dim의 크기를 줄이고, 학습 단계에서 train이 더 잘되도록 U-net 구조를 활용하여 encoder에서 decoder까지 conv레이어의 값이 잘 전달되도록 개선하는 방향으로 2차 실험 구성
 
 ---
 
