@@ -35,7 +35,7 @@ class SequenceDataset(Dataset):
             torch.tensor(next_z_seq, dtype=torch.float32),
         )
 
-def get_train_datasets(episode_len=300, seq_len=m_config.SEQUENCE_LEN):
+def get_datasets(episode_len=300, seq_len=m_config.SEQUENCE_LEN):
         train_dataset = SequenceDataset(
             z=m_config.Z_DATA_TRAIN_DIR,
             actions=m_config.ACTION_TRAIN_DIR,

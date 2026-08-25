@@ -1,3 +1,5 @@
+import os
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 ACTION_TRAIN_DIR = "./save_data/train/actions.npy"
 ACTION_VAL_DIR = "./save_data/val/actions.npy"
 OBS_TRAIN_DIR = "./save_data/train/obs.npy"

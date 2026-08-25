@@ -24,7 +24,7 @@ print('\n')
 
 print("model load")
 
-lstm, trained_loss, val_loss = LSTM(action_dim=m_config.ACTION_DIM, hidden_size=m_config.HIDDEN_SIZE)
+lstm = LSTM(action_dim=m_config.ACTION_DIM, hidden_size=m_config.HIDDEN_SIZE)
 summary(lstm)
 
 print("model LSTM loaded")
@@ -32,7 +32,7 @@ print("\n")
 
 print("model train...")
 
-lstm = train_lstm(
+lstm, trained_loss, val_loss = train_lstm(
     lstm,
     train_loader=train_loader,
     val_loader=val_loader,

@@ -83,7 +83,7 @@ with torch.no_grad():
     obs_z = reparameterize(mu, logvar)
 
     z_seq = mu.unsqueeze(0)                           # (1, 30, latent_dim)
-    predicted_next_z = lstm(obs_z, action)            # (1, 30, latent_dim)
+    predicted_next_z = lstm(z_seq, action)            # (1, 30, latent_dim)
     predicted_next_z = predicted_next_z.squeeze(0)    # (30, latent_dim)
 
     predicted_image = decoder(
