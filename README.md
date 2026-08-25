@@ -111,6 +111,8 @@ V 모듈에서 VAE를 학습을 시킴. U-Net 구조(skip connection)를 적용�
 ![predicted](https://github.com/user-attachments/assets/78a666cf-5ff4-4424-b125-142be47c3412)
 > LSTM으로 예측한 z값을 Decoder로 복원한 시각화 이미지
 
+
+
 - 학습 성능표(1차 실험에서 loss 그래프를 그리지 않음)
 
 | Model | epochs | train loss | val loss | 
@@ -128,6 +130,8 @@ V 모듈에서 VAE를 학습을 시킴. U-Net 구조(skip connection)를 적용�
 CNN 구조에서 low, mid, high level의 특징을 잘 표현하지 못했고, 단순한 이미지에 비해 latent dim이 커서 제대로 잠재 공간을 표현하지 못함.
 
 -> latent dim의 크기를 줄이고, 학습 단계에서 train이 더 잘되도록 U-net 구조를 활용하여 encoder에서 decoder까지 conv레이어의 값이 잘 전달되도록 개선.
+
+---
 
 ## 2차 실험 
 
