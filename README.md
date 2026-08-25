@@ -2,24 +2,28 @@
 
 ## 프로젝트 개요
 
-- 최근 VLA 중에서 World Model이라는 모델이 뜨고있음. 현재의 상태와 환경을 보고 다음 환경을 예측하고 다음 액션을 도출하는 모델임. 단순히 행동만 예측하는것이 아닌 모든 물리법칙을 고려하여 환경까지 예측함. 즉 환경의 상태를 고려한 행동을 예측하는것.
+- 최근 VLA 중에서 World Model이라는 모델이 뜨고있음. 현재의 상태와 환경을 보고 다음 환경을 예측하고 다음 액션을 도출하는 모델임. 단순히 행동만 예측하는것이 아닌 모든 물리법칙을 고려하여 환경까지 예측함. 즉 현재 환경의 상태와 다음 환경의 상태를 고려한 다음 행동을 예측하는것.
 - 모델은 V(Vision), M(Memory,Prediction), C(Control) 세 가지 부분으로 나뉨.
 - 최종적으론 3가지 모델을 합쳐서 상황에 대한 다음 상황을 예측하고 다음 행동을 결정하는 모델.
 ---
 
 - V(Vision): high dimension observation을 low dimension latent vector로 인코딩(z). 출력은 이미지를 latent dim z값으로 압축한 값. 
 - M(memory,Prediction): 과거의 요소들로 미래의 환경을 예측하는 모델. 입력은 V에서 압축한 z값을 받고, 출력은 예측한 z값. 
-- C(control): V,M을 통해 좋은 액션을 선택하는 작은 모델. 해당 논문에선 Linear레이어 하나를 사용함. 본 프로젝트는 일단 V,M 까지 설계하는 것을 목표로 함.
+- C(control): V,M을 통해 좋은 액션을 선택하는 작은 모델. 해당 논문에선 Linear레이어 하나를 사용함. **본 프로젝트는 일단 V,M 까지 설계하는 것을 목표로 함.**
 
 
 ## 코드 설명
 
-<details>
-<summary>📁 WORLDMODEL</summary>
+</details>
+<summary>📁 figures</summary>
+
+모델 loss 그래프와 VAE 재구성 시각화 이미지, predicted 이미지 등.
 
 <details>
 <summary>📁 Memory</summary>
-LSTM 기반 M 모듈. 인코딩한 z값 시퀀스를 학습하여 다음 환경을 예측함. 
+
+LSTM 기반 M 모듈. 인코딩한 z값 시퀀스를 학습하여 다음 환경을 예측함.
+
 <details>
 <summary>📁 m_model</summary>
 
@@ -34,14 +38,16 @@ LSTM 기반 M 모듈. 인코딩한 z값 시퀀스를 학습하여 다음 환경�
 - `m_config.py` - M모듈 전용 config 파일
 - `main.py` - 모델 학습 main 코드
 - `SequenceDataset.py` - LSTM 학습용 시퀀스 데이터 사용을 위한 데이터 생성 코드
-- `train.py` - train 코드 
+- `ShowDataset.py` - 시각화용 원본 이미지 시퀀스 데이터 생성 코드
+- `train.py` - train 코드
 
 </details>
 
 <details>
 <summary>📁 Vision</summary>
+
 CNN 기반 V 모듈. 이미지를 z값으로 인코딩
-  
+
 <details>
 <summary>📁 Data</summary>
 
@@ -51,9 +57,22 @@ CNN 기반 V 모듈. 이미지를 z값으로 인코딩
 </details>
 
 <details>
+<summary>📁 old_structure</summary>
+
+U-Net 이전 구조(skip connection 없음). LSTM이 예측한 z값을 시각화할 때, U-Net 디코더는 skip connection이 필수라 사용할 수 없어 대신 사용
+
+- `old_Decoder.py` - skip connection 없이 z값만으로 이미지 복원
+- `old_Encoder.py` - skip connection 없이 z값만 출력
+- `old_main.py` - old 구조 학습 main 코드
+- `old_VAE.py` - old_Encoder, old_Decoder를 합친 VAE 모델
+
+</details>
+
+<details>
 <summary>📁 v_model</summary>
-V 모듈에서 VAE를 학습을 시킴.  
-  
+
+V 모듈에서 VAE를 학습을 시킴.
+
 - `__init__.py`
 - `Decoder.py` - 인코더에서 인코딩한 z값을 transpose로 역변환 시켜 원래 차원으로 늘림
 - `Encoder.py` - CNN 기반 latent_dim=48 로 설정하여 z값 인코딩
@@ -63,39 +82,17 @@ V 모듈에서 VAE를 학습을 시킴.
 
 - `__init__.py`
 - `Collect.py` - 기본 데이터 수집 코드
-- `main.py` - 
+- `main.py` -
 - `show_result.py` - 디코더가 재구축한 z값을 이미지로 시각화
-- `train.py` - 
-- `v_config.py` - V 모듈에서 사용한 config 
-
-</details>
-
-<details>
-<summary>📁 z_data</summary>
-시퀀스 데이터로 인코딩한 z 값 데이터
-
-<details>
-<summary>📁 train</summary>
-
-- `next_z.npy`
-- `z.npy`
-
-</details>
-
-<details>
-<summary>📁 val</summary>
-
-- `next_z.npy`
-- `z.npy`
+- `train.py` -
+- `v_config.py` - V 모듈에서 사용한 config
 
 </details>
 
 </details>
 
-- `predicted.png`
 - `pyproject.toml`
-- `README.md`
-- `reconstruction.png`
+-`README.md`
 
 </details>
 
