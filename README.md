@@ -99,20 +99,27 @@ V 모듈에서 VAE를 학습을 시킴. U-Net 구조(skip connection)를 적용�
 ---
 
 ### LSTM 모델 summary
+
 ![LSTM Model](https://github.com/user-attachments/assets/39680469-1328-4e33-a62c-65af5f4b2d47)
+
 > 너무 단순한 환경과 이미지를 예측하기 때문에 간단하게 레이어 1개로 구성.
 
 ---
 
 ### 1차 실험 결과 
-![reconsstructure](https://github.com/user-attachments/assets/41b92148-bc43-4a93-b6dd-d11275b3c7c3)
-> 기본 CNN 기반 VAE 모델로 오리지널 이미지와 복원한 이미지 시각화
 
+- 기본 CNN 기반 VAE 모델로 오리지널 이미지와 복원한 이미지 시각화
+  
+![reconsstructure](https://github.com/user-attachments/assets/41b92148-bc43-4a93-b6dd-d11275b3c7c3)
+
+> 잘 복원된 이미지도 있었지만 에이전트가 없거나 회색T가 없는 결과가 많았음
+
+- LSTM으로 예측한 z값을 Decoder로 복원한 시각화 이미지
+  
 ![predicted](https://github.com/user-attachments/assets/b73b5382-7be9-4b23-b77a-4e6d7730a137)
 ![predicted1](https://github.com/user-attachments/assets/140cb37b-4c12-48fa-bf93-88393fc8007d)
-> LSTM으로 예측한 z값을 Decoder로 복원한 시각화 이미지
 
-
+> VAE의 z값 압축 퀄리티가 무너져서 LSTM의 예측 능력도 낮아짐. actual image를 봐도 에이전트가 없거나 회색 T가 흐려진 결과가 많았음
 
 - 학습 성능표(1차 실험에서 loss 그래프를 그리지 않음)
 
