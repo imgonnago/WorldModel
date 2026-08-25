@@ -89,36 +89,91 @@ V 모듈에서 VAE를 학습을 시킴. U-Net 구조(skip connection)를 적용�
 - `pyproject.toml` - 프로젝트 패키지 설치 설정 (pip install -e .)
 - `README.md`
 
-## 개선점
-기존 CNN기반의 VAE 모델은 train loss가 val loss보다 높고 train loss가 16.xxx 대로 완전히 학습되지 않는 문제가 있었음.
-이를 해결하고자 U-net 구조의 skip층을 사용하여 encoder 레이어 마다 출력값을 decoder의 레이어에 concat 해주고 입력으로 사용함.
-그리고 latent dim을 48에서 24로 대폭 축소 시킴. 너무 큰 잠재 공간은 PushT 같은 단순한 이미지와 문제에서 너무 낭비되고 복잡한 결과를 낼거라고 생각.
 
-### 기존 CNN 기반 VAE 모델 summary
+## 1차 실험 
+
+### 기본 CNN 기반 VAE 모델 summary
 ![old_model_structure](https://github.com/user-attachments/assets/4421adf1-4893-43a8-ba01-c4c40893b8ca)
 
-### U-net 기반 VAE 모델 summary
-![unet_structure](https://github.com/user-attachments/assets/710267aa-f704-4ec2-ad58-c64c31f23368)
-- 기존 CNN과 달리 각 층을 block으로 나눠 정의하고 각 층의 출력을 반환하여 decoder에 concat하여 입력으로 들어감
+### LSTM 모델 summary
+![LSTM Model](https://github.com/user-attachments/assets/39680469-1328-4e33-a62c-65af5f4b2d47)
+- 너무 단순한 환경과 이미지를 예측하기 때문에 간단하게 레이어 1개로 구성.
 
-
-## 성능
+### 1차 실험 결과 
 ![reconsstructure](https://github.com/user-attachments/assets/41b92148-bc43-4a93-b6dd-d11275b3c7c3)
-- 오리지널 이미지와 VAE로 복원한 이미지를 시각화
+- 기본 CNN 기반 VAE 모델로 오리지널 이미지와 복원한 이미지 시각화
 
-![predicted](https://github.com/user-attachments/assets/97363bc6-a1f0-4ebc-9d26-3b2862ef2746)
+![predicted](https://github.com/user-attachments/assets/78a666cf-5ff4-4424-b125-142be47c3412)
 - LSTM으로 예측한 z값을 Decoder로 복원한 시각화 이미지
 
-- 학습 성능표
-
-Epoch 138/1000 - Train: 3.6281, Val: 3.3629, LR: 0.000001
-  → 베스트 모델 갱신 (val loss: 3.3629)
--> unet 구조 학습결과
+- 학습 성능표(1차 실험에서 loss 그래프를 그리지 않음)
 
 | Model | epochs | train loss | val loss | 
 |-------|--------|------------|----------|
 | VAE | 95 | 15.0893 | 6.6171 |
 | LSTM | 497 | 15.9591 | 18.1231 |
 
+### 1차 실험 결과 해석
+
+기본 CNN 구조로 train을 했을 때 train loss가 val loss 보다 높고 train loss가 16.xxx 대로 제대로 학습되지 않는 문제가 있음.
+기본 CNN 구조로는 이미지를 **z값으로 잘 압축하지 못함.**
+이미지에서 에이전트가 없거나 회색 T가 없어지거나 흐려지는 현상이 많았음.
+CNN 구조에서 low, mid, high level의 특징을 잘 표현하지 못했고, 단순한 이미지에 비해 latent dim이 커서 제대로 잠재 공간을 표현하지 못함.
+
+-> latent dim의 크기를 줄이고, 학습 단계에서 train이 더 잘되도록 U-net 구조를 활용하여 encoder에서 decoder까지 conv레이어의 값이 잘 전달되도록 개선.
+
+## 2차 실험 
+
+**U-net 구조의 skip층**을 사용하여 encoder 레이어 마다 출력값을 decoder의 레이어에 concat 해주고 입력으로 사용함.
+그리고 **latent dim을 48에서 24**로 대폭 축소 시킴. 너무 큰 잠재 공간은 PushT 같은 단순한 이미지와 문제에서 넓은 공간을 최적화 하는 과정이 더 어려울 것이라 생각.
+LSTM 모델은 1차 실험의 모델 구조를 그대로 사용함.
+
+### U-net 기반 VAE 모델 summary
+![unet_structure](https://github.com/user-attachments/assets/0f2c3110-5009-467d-a485-d7572508255f)
+- 기존 CNN과 달리 각 층을 block으로 나눠 정의하고 각 층의 출력을 반환하여 decoder에 concat하여 입력으로 들어감
+
+### 2차 실험 결과
+
+- 학습 성능표
+
+| Model | epochs | train loss | val loss | 
+|-------|--------|------------|----------|
+| U-net VAE | 138 | 3.4043 | 3.1640 |
+| LSTM | 116 | 0.0003 | 0.0001 |
+
+- U-net VAE Loss
+![unet vae loss](https://github.com/user-attachments/assets/72cba224-db90-4bdd-b764-f8b8725268aa)
+
+- LSTM Loss trained with U-net VAE
+![LSTM with U-net](https://github.com/user-attachments/assets/996418ef-993f-405b-9277-3dbe0537562c)
+
+- U-net 구조 기반 VAE 모델로 오리지널 이미지와 복원한 이미지 시각화
+![unet reconstruction](https://github.com/user-attachments/assets/b820e3c6-71fc-45c2-b656-cbb82bf30d49)
+
+- 흐린 부분도 있지만 전체적으로 양호하게 복원됨.
+
+- LSTM으로 예측한 z값을 Decoder로 복원한 시각화 이미지
+![LSTM with unet](https://github.com/user-attachments/assets/109ee265-2bbd-4745-ab93-04de88afc9e2)
+
+- 전체적으로 양호하게 예측함. 
+
+### 2차 실험 결과 해석
+
+1차 실험에서 문제 되었던 train loss가 크게 떠있는 현상을 U-net 구조의 skip층을 통해 encoder에 각 레이어의 값을 decoder에 전달하여 학습이 잘 흐르도록 함.
+결과적으로 각 conv층의 값을 decoder에서 받아 decoder가 encoder가 뽑아둔 level들을 재사용하여 loss를 줄이는데 수월했고, gradient가 보다 짧은 경로로 전달되어 소실이 줄어들었을 것이라 해석. 
+latent dim을 줄인 효과로는 현재 실험만으로 정확히 설명하기 어렵지만, 단순한 이미지에 적당한 공간을 할당하여 최적화 하는데 수월했을 것이라고 해석됨.
+
+## 향후 개선점
+
+1. LSTM을 학습 할 때 VAE를 통해 z값 데이터를 만들어 사용했는데, 이 때 logvar는 사용하지 않고 mu만 사용한 노이즈 없는 데이터로 학습을 시킴. 
+이로 인해 LSTM모델이 노이즈 없이 항상 정답인 값만 학습을 하였고, 그럼에도 M모듈의 예측은 노이즈가 있던 시각화 과정에서도 강건했지만, 이는 분포적 의미를 잃어버렸다고 할 수 있음. 
+향후 LSTM 모델이 노이즈를 같이 학습 했을 때의 성능과 비교해보면 좋을 것.
+
+2. 현재 시간과 프로젝트 난이도를 위해 Controller 모듈은 만들지 않았음. 향후 프로젝트에서는 C모듈을 만들어서 논문에서 사용한 CMA-ES 알고리즘이나 강화학습 알고리즘을 이용하여 학습 시키고 성능을 확인하면 좋을 것.
+
+3. 모델이 같은 환경에서 다른 액션이 나왔을 때도 다양한 경우의 수로 커버를 할 수 있는지 실험해보면 좋을 것. 즉 모델이 융통성을 확인.
+
 ## 참고 논문
 World Model: https://arxiv.org/pdf/1803.10122
+
+U-net: https://arxiv.org/abs/1505.04597
