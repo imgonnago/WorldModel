@@ -95,9 +95,13 @@ V 모듈에서 VAE를 학습을 시킴. U-Net 구조(skip connection)를 적용�
 ### 기본 CNN 기반 VAE 모델 summary
 ![old_model_structure](https://github.com/user-attachments/assets/4421adf1-4893-43a8-ba01-c4c40893b8ca)
 
+---
+
 ### LSTM 모델 summary
 ![LSTM Model](https://github.com/user-attachments/assets/39680469-1328-4e33-a62c-65af5f4b2d47)
 - 너무 단순한 환경과 이미지를 예측하기 때문에 간단하게 레이어 1개로 구성.
+
+---
 
 ### 1차 실험 결과 
 ![reconsstructure](https://github.com/user-attachments/assets/41b92148-bc43-4a93-b6dd-d11275b3c7c3)
@@ -112,6 +116,8 @@ V 모듈에서 VAE를 학습을 시킴. U-Net 구조(skip connection)를 적용�
 |-------|--------|------------|----------|
 | VAE | 95 | 15.0893 | 6.6171 |
 | LSTM | 497 | 15.9591 | 18.1231 |
+
+---
 
 ### 1차 실험 결과 해석
 
@@ -128,9 +134,13 @@ CNN 구조에서 low, mid, high level의 특징을 잘 표현하지 못했고, �
 그리고 **latent dim을 48에서 24**로 대폭 축소 시킴. 너무 큰 잠재 공간은 PushT 같은 단순한 이미지와 문제에서 넓은 공간을 최적화 하는 과정이 더 어려울 것이라 생각.
 LSTM 모델은 1차 실험의 모델 구조를 그대로 사용함.
 
+---
+
 ### U-net 기반 VAE 모델 summary
 ![unet_structure](https://github.com/user-attachments/assets/0f2c3110-5009-467d-a485-d7572508255f)
 - 기존 CNN과 달리 각 층을 block으로 나눠 정의하고 각 층의 출력을 반환하여 decoder에 concat하여 입력으로 들어감
+
+---
 
 ### 2차 실험 결과
 
@@ -142,20 +152,26 @@ LSTM 모델은 1차 실험의 모델 구조를 그대로 사용함.
 | LSTM | 116 | 0.0003 | 0.0001 |
 
 - U-net VAE Loss
+- 
 ![unet vae loss](https://github.com/user-attachments/assets/72cba224-db90-4bdd-b764-f8b8725268aa)
 
 - LSTM Loss trained with U-net VAE
+- 
 ![LSTM with U-net](https://github.com/user-attachments/assets/996418ef-993f-405b-9277-3dbe0537562c)
 
 - U-net 구조 기반 VAE 모델로 오리지널 이미지와 복원한 이미지 시각화
+- 
 ![unet reconstruction](https://github.com/user-attachments/assets/b820e3c6-71fc-45c2-b656-cbb82bf30d49)
 
 - 흐린 부분도 있지만 전체적으로 양호하게 복원됨.
 
 - LSTM으로 예측한 z값을 Decoder로 복원한 시각화 이미지
+  
 ![LSTM with unet](https://github.com/user-attachments/assets/109ee265-2bbd-4745-ab93-04de88afc9e2)
 
 - 전체적으로 양호하게 예측함. 
+
+---
 
 ### 2차 실험 결과 해석
 
