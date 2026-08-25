@@ -14,16 +14,8 @@
 
 ## 코드 설명
 
-</details>
-<summary>📁 figures</summary>
-
-모델 loss 그래프와 VAE 재구성 시각화 이미지, predicted 이미지 등.
-
-</details>
-
 <details>
 <summary>📁 Memory</summary>
-
 LSTM 기반 M 모듈. 인코딩한 z값 시퀀스를 학습하여 다음 환경을 예측함.
 
 <details>
@@ -47,7 +39,6 @@ LSTM 기반 M 모듈. 인코딩한 z값 시퀀스를 학습하여 다음 환경�
 
 <details>
 <summary>📁 Vision</summary>
-
 CNN 기반 V 모듈. 이미지를 z값으로 인코딩
 
 <details>
@@ -60,43 +51,43 @@ CNN 기반 V 모듈. 이미지를 z값으로 인코딩
 
 <details>
 <summary>📁 old_structure</summary>
+U-Net(skip connection) 적용 이전의 VAE 구조. M의 예측 결과를 시각화할 때, skip connection 없이 z만으로 이미지를 복원해야 하므로 별도로 학습하여 사용함
 
-U-Net 이전 구조(skip connection 없음). LSTM이 예측한 z값을 시각화할 때, U-Net 디코더는 skip connection이 필수라 사용할 수 없어 대신 사용
-
-- `old_Decoder.py` - skip connection 없이 z값만으로 이미지 복원
-- `old_Encoder.py` - skip connection 없이 z값만 출력
+- `old_Decoder.py` - skip connection 없이 z만으로 이미지를 복원하는 디코더
+- `old_Encoder.py` - skip connection 없는 인코더
 - `old_main.py` - old 구조 학습 main 코드
-- `old_VAE.py` - old_Encoder, old_Decoder를 합친 VAE 모델
+- `old_VAE.py` - old 구조 인코더/디코더를 합친 VAE
 
 </details>
 
 <details>
 <summary>📁 v_model</summary>
-
-V 모듈에서 VAE를 학습을 시킴.
+V 모듈에서 VAE를 학습을 시킴. U-Net 구조(skip connection)를 적용해 재구성 품질을 개선함
 
 - `__init__.py`
-- `Decoder.py` - 인코더에서 인코딩한 z값을 transpose로 역변환 시켜 원래 차원으로 늘림
-- `Encoder.py` - CNN 기반 latent_dim=48 로 설정하여 z값 인코딩
+- `Decoder.py` - 인코더에서 인코딩한 z값을 transpose로 역변환 시켜 원래 차원으로 늘림. 인코더의 conv1,2,3 값을 skip connection으로 받아 공간 정보를 보존함
+- `Encoder.py` - CNN 기반 latent_dim=48 로 설정하여 z값 인코딩. 각 conv 블록의 출력을 skip connection용으로 함께 반환함
 - `VAE.py` - 인코더 디코더를 합친 VAE 모델 이미지를 재구축함
 
 </details>
 
 - `__init__.py`
 - `Collect.py` - 기본 데이터 수집 코드
-- `main.py` -
+- `main.py` - 모델 학습 main 코드
 - `show_result.py` - 디코더가 재구축한 z값을 이미지로 시각화
-- `train.py` -
+- `train.py` - train 코드
 - `v_config.py` - V 모듈에서 사용한 config
 
 </details>
 
+<details>
+<summary>📁 figures</summary>
+학습 loss 그래프, 재구성/예측 결과 시각화 이미지 저장 폴더
+
 </details>
 
-- `pyproject.toml`
--`README.md`
-
-<details>
+- `pyproject.toml` - 프로젝트 패키지 설치 설정 (pip install -e .)
+- `README.md`
 
 ## 개선점
 기존 CNN기반의 VAE 모델은 train loss가 val loss보다 높고 train loss가 16.xxx 대로 완전히 학습되지 않는 문제가 있었음.
