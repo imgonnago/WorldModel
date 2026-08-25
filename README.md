@@ -2,9 +2,10 @@
 
 ## 프로젝트 개요
 
-- 최근 VLA 중에서 World Model이라는 모델이 뜨고있음. 현재의 상태와 환경을 보고 다음 환경을 예측하고 다음 액션을 도출하는 모델임. 단순히 행동만 예측하는것이 아닌 모든 물리법칙을 고려하여 환경까지 예측함. 즉 현재 환경의 상태와 다음 환경의 상태를 고려한 다음 행동을 예측하는것.
-- 모델은 V(Vision), M(Memory,Prediction), C(Control) 세 가지 부분으로 나뉨.
-- 최종적으론 3가지 모델을 합쳐서 상황에 대한 다음 상황을 예측하고 다음 행동을 결정하는 모델.
+최근 VLA 중에서 World Model이라는 모델이 뜨고있음. 현재의 상태와 환경을 보고 다음 환경을 예측하고 다음 액션을 도출하는 모델임. 단순히 행동만 예측하는것이 아닌 모든 물리법칙을 고려하여 환경까지 예측함. 즉 현재 환경의 상태와 다음 환경의 상태를 고려한 다음 행동을 예측하는것.
+모델은 V(Vision), M(Memory,Prediction), C(Control) 세 가지 부분으로 나뉨.
+최종적으론 3가지 모델을 합쳐서 상황에 대한 다음 상황을 예측하고 다음 행동을 결정하는 모델.
+
 ---
 
 - V(Vision): high dimension observation을 low dimension latent vector로 인코딩(z). 출력은 이미지를 latent dim z값으로 압축한 값. 
@@ -105,10 +106,10 @@ V 모듈에서 VAE를 학습을 시킴. U-Net 구조(skip connection)를 적용�
 
 ### 1차 실험 결과 
 ![reconsstructure](https://github.com/user-attachments/assets/41b92148-bc43-4a93-b6dd-d11275b3c7c3)
-- 기본 CNN 기반 VAE 모델로 오리지널 이미지와 복원한 이미지 시각화
+> 기본 CNN 기반 VAE 모델로 오리지널 이미지와 복원한 이미지 시각화
 
 ![predicted](https://github.com/user-attachments/assets/78a666cf-5ff4-4424-b125-142be47c3412)
-- LSTM으로 예측한 z값을 Decoder로 복원한 시각화 이미지
+> LSTM으로 예측한 z값을 Decoder로 복원한 시각화 이미지
 
 - 학습 성능표(1차 실험에서 loss 그래프를 그리지 않음)
 
@@ -138,7 +139,7 @@ LSTM 모델은 1차 실험의 모델 구조를 그대로 사용함.
 
 ### U-net 기반 VAE 모델 summary
 ![unet_structure](https://github.com/user-attachments/assets/0f2c3110-5009-467d-a485-d7572508255f)
-- 기존 CNN과 달리 각 층을 block으로 나눠 정의하고 각 층의 출력을 반환하여 decoder에 concat하여 입력으로 들어감
+> 기존 CNN과 달리 각 층을 block으로 나눠 정의하고 각 층의 출력을 반환하여 decoder에 concat하여 입력으로 들어감
 
 ---
 
@@ -152,24 +153,24 @@ LSTM 모델은 1차 실험의 모델 구조를 그대로 사용함.
 | LSTM | 116 | 0.0003 | 0.0001 |
 
 - U-net VAE Loss
-- 
+
 ![unet vae loss](https://github.com/user-attachments/assets/72cba224-db90-4bdd-b764-f8b8725268aa)
 
 - LSTM Loss trained with U-net VAE
-- 
+  
 ![LSTM with U-net](https://github.com/user-attachments/assets/996418ef-993f-405b-9277-3dbe0537562c)
 
 - U-net 구조 기반 VAE 모델로 오리지널 이미지와 복원한 이미지 시각화
-- 
+  
 ![unet reconstruction](https://github.com/user-attachments/assets/b820e3c6-71fc-45c2-b656-cbb82bf30d49)
 
-- 흐린 부분도 있지만 전체적으로 양호하게 복원됨.
+> 흐린 부분도 있지만 전체적으로 양호하게 복원됨.
 
 - LSTM으로 예측한 z값을 Decoder로 복원한 시각화 이미지
   
 ![LSTM with unet](https://github.com/user-attachments/assets/109ee265-2bbd-4745-ab93-04de88afc9e2)
 
-- 전체적으로 양호하게 예측함. 
+> 전체적으로 양호하게 예측함. 
 
 ---
 
