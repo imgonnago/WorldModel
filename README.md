@@ -19,7 +19,7 @@
 
 모델 loss 그래프와 VAE 재구성 시각화 이미지, predicted 이미지 등.
 
-</details>
+<details>
 
 <details>
 <summary>📁 Memory</summary>
@@ -96,7 +96,7 @@ V 모듈에서 VAE를 학습을 시킴.
 - `pyproject.toml`
 -`README.md`
 
-</details>
+<details>
 
 ## 개선점
 기존 CNN기반의 VAE 모델은 train loss가 val loss보다 높고 train loss가 16.xxx 대로 완전히 학습되지 않는 문제가 있었음.
