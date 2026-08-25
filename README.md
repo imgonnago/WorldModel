@@ -19,6 +19,8 @@
 
 모델 loss 그래프와 VAE 재구성 시각화 이미지, predicted 이미지 등.
 
+</details>
+
 <details>
 <summary>📁 Memory</summary>
 
